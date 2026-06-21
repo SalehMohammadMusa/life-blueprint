@@ -1483,31 +1483,40 @@ function unlockApp() {
   migrateXp();
   updateHeaderXp();
   syncFromCloud().then(() => { migrateXp(); updateHeaderXp(); renderToday(); });
-  requestNotifPermission();
   scheduleReminder();
+  requestNotifPermission();
 }
 
-let reminderTimer;
+const VAPID_PUBLIC = 'BIkqDJwXWk6-cLvVa8N1NdCViXcHFQ_bVX66zFx32OSXpYTAA4Qh6fDUdmCIDFHBkKw1FP1KelgRihkcfJOX9Pk';
+
 function scheduleReminder() {
-  clearTimeout(reminderTimer);
   localStorage.setItem('lb2026_lastOpen', Date.now());
-  reminderTimer = setTimeout(() => {
-    if (Notification.permission === 'granted') {
-      new Notification('Life Blueprint 🗺️', {
-        body: "You haven't checked in for 2 hours. How are your habits going?",
-        icon: 'https://salehmohammadmusa.github.io/life-blueprint/icon.png',
-        badge: 'https://salehmohammadmusa.github.io/life-blueprint/icon.png',
-      });
-    }
-    scheduleReminder();
-  }, 2 * 60 * 60 * 1000);
 }
 
-function requestNotifPermission() {
-  if (!('Notification' in window)) return;
-  if (Notification.permission === 'default') {
-    Notification.requestPermission();
-  }
+async function requestNotifPermission() {
+  if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
+  try {
+    const reg = await navigator.serviceWorker.register('/life-blueprint/sw.js');
+    const perm = await Notification.requestPermission();
+    if (perm !== 'granted') return;
+    const existing = await reg.pushManager.getSubscription();
+    if (existing) { await savePushSub(existing); return; }
+    const sub = await reg.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC)
+    });
+    await savePushSub(sub);
+  } catch(e) { console.warn('Push setup failed:', e.message); }
+}
+
+async function savePushSub(sub) {
+  await sbClient.from('push_subscriptions').upsert({ id: SB_ROW, subscription: sub, last_open: new Date().toISOString() });
+}
+
+function urlBase64ToUint8Array(b64) {
+  const pad = '='.repeat((4 - b64.length % 4) % 4);
+  const raw = atob((b64 + pad).replace(/-/g, '+').replace(/_/g, '/'));
+  return Uint8Array.from([...raw].map(c => c.charCodeAt(0)));
 }
 
 function lockApp() {
