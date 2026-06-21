@@ -673,8 +673,21 @@ body::after{
 /* XP toast */
 .toast.xp{border-color:var(--violet);color:var(--violet)}
 
-/* 5-tab bottom nav adjustments */
-.bottom-nav .nav-btn{font-size:8px;padding:9px 0 7px}
+/* 6-tab bottom nav adjustments */
+.bottom-nav .nav-btn{font-size:7px;padding:8px 0 6px}
+.bottom-nav .nav-btn svg{width:18px;height:18px}
+
+/* ─── AGENTS TAB ──────────────────────────────────────────── */
+.agent-card{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:10px}
+.agent-name{font-size:14px;font-weight:700;color:var(--teal);letter-spacing:.5px}
+.agent-desc{font-size:12px;color:var(--muted);margin:3px 0 8px}
+.agent-days{font-size:11px;color:var(--amber);font-weight:700;letter-spacing:.5px}
+.agent-days.overdue{color:var(--rose)}
+.agent-form{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:16px}
+.agent-input{width:100%;background:var(--dim);border:1px solid var(--border);border-radius:6px;color:var(--text);padding:8px 10px;font-size:13px;margin-bottom:8px;outline:none;font-family:inherit}
+.agent-input:focus{border-color:var(--teal)}
+.btn-sm{background:var(--dim);border:1px solid var(--border);border-radius:8px;color:var(--teal);font-size:12px;font-weight:700;padding:7px 12px;cursor:pointer;letter-spacing:.5px;transition:background .15s}
+.btn-sm:active{background:var(--border)}
 </style>
 </head>
 <body>
@@ -745,6 +758,7 @@ body::after{
   <button class="nav-tab" onclick="showTab('finance')">ASSETS</button>
   <button class="nav-tab" onclick="showTab('goals')">OPS</button>
   <button class="nav-tab" onclick="showTab('journey')">DOSSIER</button>
+  <button class="nav-tab" onclick="showTab('agents')">AGENTS</button>
 </div>
 
 <!-- ── TODAY ───────────────────────────────────────────────── -->
@@ -789,6 +803,23 @@ body::after{
 
   <!-- Grouped habits -->
   <div id="habitGroups"></div>
+
+  <!-- Daily Goal -->
+  <div class="sec-label">Today's Goal</div>
+  <div class="agent-form">
+    <input class="agent-input" id="dailyGoalInput" placeholder="What's your main goal today?" maxlength="150">
+    <button class="btn-sm" id="dailyGoalBtn" onclick="toggleDailyGoal()" style="width:100%">MARK COMPLETE</button>
+  </div>
+
+  <!-- Daily Reflection -->
+  <div class="sec-label">Daily Reflection</div>
+  <div class="agent-form">
+    <div style="font-size:10px;color:var(--muted);letter-spacing:.8px;margin-bottom:4px">FAILED TODAY</div>
+    <textarea class="agent-input" id="failedInput" placeholder="What didn't go well?" rows="2" style="resize:none"></textarea>
+    <div style="font-size:10px;color:var(--muted);letter-spacing:.8px;margin-bottom:4px;margin-top:4px">OPTIMIZATION TIP</div>
+    <textarea class="agent-input" id="tipInput" placeholder="What would you do differently?" rows="2" style="resize:none"></textarea>
+    <button class="btn-sm" onclick="saveReflection()" style="width:100%;margin-top:4px">SAVE REFLECTION</button>
+  </div>
 </div>
 
 <!-- ── STATS ───────────────────────────────────────────────── -->
@@ -916,6 +947,13 @@ body::after{
 <!-- ── GOALS ───────────────────────────────────────────────── -->
 <div class="section" id="tab-goals">
 
+  <!-- Weekly Goal -->
+  <div class="sec-label">Weekly Goal</div>
+  <div class="agent-form">
+    <input class="agent-input" id="weeklyGoalInput" placeholder="What's your main goal this week?" maxlength="150">
+    <button class="btn-sm" id="weeklyGoalBtn" onclick="toggleWeeklyGoal()" style="width:100%">MARK COMPLETE</button>
+  </div>
+
   <div class="week-info-card">
     <div class="wic-left">
       <h3>This Week</h3>
@@ -945,6 +983,19 @@ body::after{
   <div class="chart-card" id="journeyBadges"></div>
   <div class="sec-label">XP This Week</div>
   <div class="chart-card" id="xpHistory"></div>
+  <div class="sec-label">Reflection Log</div>
+  <div id="reflectionLog"></div>
+</div>
+
+<div class="section" id="tab-agents">
+  <div class="agent-form">
+    <div class="sec-label">New Contact</div>
+    <input class="agent-input" id="agentName" placeholder="Name" maxlength="50">
+    <input class="agent-input" id="agentDesc" placeholder="How you met / notes" maxlength="120">
+    <button class="btn-primary" onclick="addPerson()" style="margin-top:0">+ ADD AGENT</button>
+  </div>
+  <div class="sec-label">Your Network</div>
+  <div id="agentList"></div>
 </div>
 
 </div><!-- /#app -->
@@ -971,6 +1022,10 @@ body::after{
   <button class="nav-btn" id="nav-journey" onclick="showTab('journey')">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
     DOSSIER
+  </button>
+  <button class="nav-btn" id="nav-agents" onclick="showTab('agents')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    AGENTS
   </button>
 </div>
 
@@ -1598,6 +1653,8 @@ function unlockApp() {
   syncFromCloud().then(() => { migrateXp(); updateHeaderXp(); renderToday(); });
   scheduleReminder();
   requestNotifPermission();
+  setTimeout(checkContactNotifications, 2000);
+  setTimeout(checkGoalNotifications, 3000);
 }
 
 const VAPID_PUBLIC = 'BIkqDJwXWk6-cLvVa8N1NdCViXcHFQ_bVX66zFx32OSXpYTAA4Qh6fDUdmCIDFHBkKw1FP1KelgRihkcfJOX9Pk';
@@ -1860,6 +1917,8 @@ function renderToday() {
       cards.appendChild(wrap);
     });
   });
+  renderDailyGoal();
+  renderReflection();
 }
 
 function setMood(n) {
@@ -2241,6 +2300,245 @@ function launchConfetti() {
 }
 
 // ═══════════════════════════════════════════════════════════════
+// DAILY GOAL
+// ═══════════════════════════════════════════════════════════════
+function renderDailyGoal() {
+  const data = db();
+  const ds = todayStr();
+  const g = (data.dailyGoal || {})[ds] || {};
+  const inp = document.getElementById('dailyGoalInput');
+  const btn = document.getElementById('dailyGoalBtn');
+  if (!inp) return;
+  inp.value = g.text || '';
+  inp.oninput = () => {
+    const d = db();
+    if (!d.dailyGoal) d.dailyGoal = {};
+    if (!d.dailyGoal[ds]) d.dailyGoal[ds] = {};
+    d.dailyGoal[ds].text = inp.value;
+    dbSave(d);
+  };
+  if (g.done) {
+    btn.textContent = '✓ COMPLETED';
+    btn.style.color = 'var(--teal)';
+    inp.style.opacity = '.5';
+  } else {
+    btn.textContent = 'MARK COMPLETE';
+    btn.style.color = '';
+    inp.style.opacity = '1';
+  }
+}
+
+function toggleDailyGoal() {
+  const data = db();
+  const ds = todayStr();
+  if (!data.dailyGoal) data.dailyGoal = {};
+  if (!data.dailyGoal[ds]) data.dailyGoal[ds] = {};
+  const g = data.dailyGoal[ds];
+  if (!g.text) { showToast('Enter a goal first'); return; }
+  g.done = !g.done;
+  dbSave(data);
+  renderDailyGoal();
+  showToast(g.done ? 'Goal completed! 🎯' : 'Marked incomplete');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// WEEKLY GOAL
+// ═══════════════════════════════════════════════════════════════
+function renderWeeklyGoal() {
+  const data = db();
+  const wk = weekKey(todayStr());
+  const g = (data.weeklyGoal || {})[wk] || {};
+  const inp = document.getElementById('weeklyGoalInput');
+  const btn = document.getElementById('weeklyGoalBtn');
+  if (!inp) return;
+  inp.value = g.text || '';
+  inp.oninput = () => {
+    const d = db();
+    if (!d.weeklyGoal) d.weeklyGoal = {};
+    if (!d.weeklyGoal[wk]) d.weeklyGoal[wk] = {};
+    d.weeklyGoal[wk].text = inp.value;
+    dbSave(d);
+  };
+  if (g.done) {
+    btn.textContent = '✓ COMPLETED';
+    btn.style.color = 'var(--teal)';
+    inp.style.opacity = '.5';
+  } else {
+    btn.textContent = 'MARK COMPLETE';
+    btn.style.color = '';
+    inp.style.opacity = '1';
+  }
+}
+
+function toggleWeeklyGoal() {
+  const data = db();
+  const wk = weekKey(todayStr());
+  if (!data.weeklyGoal) data.weeklyGoal = {};
+  if (!data.weeklyGoal[wk]) data.weeklyGoal[wk] = {};
+  const g = data.weeklyGoal[wk];
+  if (!g.text) { showToast('Enter a goal first'); return; }
+  g.done = !g.done;
+  dbSave(data);
+  renderWeeklyGoal();
+  showToast(g.done ? 'Weekly goal complete! 🏆' : 'Marked incomplete');
+}
+
+// ═══════════════════════════════════════════════════════════════
+// DAILY REFLECTION
+// ═══════════════════════════════════════════════════════════════
+function renderReflection() {
+  const data = db();
+  const ds = todayStr();
+  const r = (data.reflections || {})[ds] || {};
+  const fi = document.getElementById('failedInput');
+  const ti = document.getElementById('tipInput');
+  if (!fi) return;
+  fi.value = r.failed || '';
+  ti.value = r.tip || '';
+  const autoSave = () => {
+    const d = db();
+    if (!d.reflections) d.reflections = {};
+    if (!d.reflections[ds]) d.reflections[ds] = {};
+    d.reflections[ds].failed = fi.value;
+    d.reflections[ds].tip = ti.value;
+    dbSave(d);
+  };
+  fi.oninput = autoSave;
+  ti.oninput = autoSave;
+}
+
+function saveReflection() {
+  const ds = todayStr();
+  const fi = document.getElementById('failedInput');
+  const ti = document.getElementById('tipInput');
+  const data = db();
+  if (!data.reflections) data.reflections = {};
+  if (!data.reflections[ds]) data.reflections[ds] = {};
+  data.reflections[ds].failed = fi.value;
+  data.reflections[ds].tip = ti.value;
+  dbSave(data);
+  showToast('Reflection saved ✓');
+}
+
+function renderReflectionLog() {
+  const el = document.getElementById('reflectionLog');
+  if (!el) return;
+  const data = db();
+  const entries = Object.entries(data.reflections || {})
+    .filter(([, r]) => r.failed || r.tip)
+    .sort(([a], [b]) => b.localeCompare(a))
+    .slice(0, 30);
+  if (!entries.length) {
+    el.innerHTML = '<div style="color:var(--muted);font-size:13px;text-align:center;padding:16px 0">No reflections yet.</div>';
+    return;
+  }
+  el.innerHTML = entries.map(([ds, r]) => `
+    <div class="agent-card" style="margin-bottom:10px">
+      <div style="font-size:10px;color:var(--sky);letter-spacing:.8px;margin-bottom:6px">${fmtShort(ds)}</div>
+      ${r.failed ? `<div style="font-size:10px;color:var(--muted);letter-spacing:.8px">FAILED</div><div style="font-size:13px;margin:2px 0 6px">${r.failed}</div>` : ''}
+      ${r.tip ? `<div style="font-size:10px;color:var(--muted);letter-spacing:.8px">TIP</div><div style="font-size:13px;margin-top:2px">${r.tip}</div>` : ''}
+    </div>`).join('');
+}
+
+function checkGoalNotifications() {
+  if (Notification.permission !== 'granted') return;
+  const data = db();
+  const ds = todayStr();
+  const wk = weekKey(ds);
+  const dg = (data.dailyGoal || {})[ds];
+  if (dg?.text && !dg.done) {
+    new Notification('Daily Goal Pending', { body: dg.text, icon: '/life-blueprint/icon-192.png', tag: 'daily-goal' });
+  }
+  const wg = (data.weeklyGoal || {})[wk];
+  if (wg?.text && !wg.done) {
+    new Notification('Weekly Goal Pending', { body: wg.text, icon: '/life-blueprint/icon-192.png', tag: 'weekly-goal' });
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// AGENTS (Contacts)
+// ═══════════════════════════════════════════════════════════════
+function renderAgents() {
+  const data = db();
+  const people = data.people || [];
+  const list = document.getElementById('agentList');
+  if (!people.length) {
+    list.innerHTML = '<div style="color:var(--muted);font-size:13px;text-align:center;padding:24px 0">No agents in your network yet.</div>';
+    return;
+  }
+  const today = new Date().toISOString().split('T')[0];
+  list.innerHTML = people.map(p => {
+    const days = p.lastTexted ? Math.floor((Date.now() - new Date(p.lastTexted)) / 86400000) : null;
+    const overdue = days === null || days >= 14;
+    const daysLabel = days === null ? 'Never texted' : days === 0 ? 'Texted today ✓' : `Last texted ${days}d ago`;
+    return `<div class="agent-card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div style="flex:1">
+          <div class="agent-name">${p.name}</div>
+          <div class="agent-desc">${p.desc || '—'}</div>
+          <div class="agent-days${overdue && days !== 0 ? ' overdue' : ''}">${overdue && days !== 0 ? '⚠ ' : ''}${daysLabel}</div>
+        </div>
+        <button onclick="deletePerson('${p.id}')" style="background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;padding:0 0 0 10px;line-height:1">×</button>
+      </div>
+      <div style="margin-top:10px">
+        <button class="btn-sm" onclick="markTexted('${p.id}')" style="width:100%">✓ TEXTED TODAY</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function addPerson() {
+  const name = document.getElementById('agentName').value.trim();
+  const desc = document.getElementById('agentDesc').value.trim();
+  if (!name) { showToast('Enter a name'); return; }
+  const data = db();
+  if (!data.people) data.people = [];
+  data.people.unshift({ id: Date.now().toString(36), name, desc, lastTexted: null });
+  dbSave(data);
+  document.getElementById('agentName').value = '';
+  document.getElementById('agentDesc').value = '';
+  renderAgents();
+  showToast('Agent added ✓');
+}
+
+function markTexted(id) {
+  const data = db();
+  const p = (data.people || []).find(x => x.id === id);
+  if (!p) return;
+  p.lastTexted = new Date().toISOString().split('T')[0];
+  dbSave(data);
+  renderAgents();
+  showToast(`${p.name} — contact logged ✓`);
+}
+
+function deletePerson(id) {
+  const data = db();
+  data.people = (data.people || []).filter(x => x.id !== id);
+  dbSave(data);
+  renderAgents();
+  showToast('Agent removed');
+}
+
+function checkContactNotifications() {
+  const data = db();
+  const people = data.people || [];
+  if (!people.length) return;
+  if (Notification.permission !== 'granted') return;
+  const overdue = people.filter(p => {
+    if (!p.lastTexted) return true;
+    return Math.floor((Date.now() - new Date(p.lastTexted)) / 86400000) >= 14;
+  });
+  overdue.forEach(p => {
+    const days = p.lastTexted ? Math.floor((Date.now() - new Date(p.lastTexted)) / 86400000) : null;
+    new Notification('Stay connected', {
+      body: `You haven\'t texted ${p.name} in ${days !== null ? days + ' days' : 'a while'}.`,
+      icon: '/life-blueprint/icon-192.png',
+      tag: 'contact-' + p.id,
+    });
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════
 // TABS / TOAST / INIT
 // ═══════════════════════════════════════════════════════════════
 function showTab(name) {
@@ -2253,8 +2551,9 @@ function showTab(name) {
   });
   if (name === 'stats')   renderStats();
   if (name === 'finance') renderFinance();
-  if (name === 'goals')   renderGoals();
-  if (name === 'journey') renderJourney();
+  if (name === 'goals')   { renderGoals(); renderWeeklyGoal(); }
+  if (name === 'journey') { renderJourney(); renderReflectionLog(); }
+  if (name === 'agents')  renderAgents();
 }
 
 let toastTimer;
