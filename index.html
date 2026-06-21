@@ -458,6 +458,124 @@ body{
   transition:color .2s;
 }
 .lock-icon-btn:hover{color:var(--text)}
+
+/* ─── XP / LEVEL HEADER ─────────────────────────────────── */
+.xp-pill{
+  display:flex;align-items:center;gap:8px;
+  background:rgba(167,139,250,.12);border:1px solid rgba(167,139,250,.3);
+  border-radius:99px;padding:5px 12px;cursor:pointer;
+}
+.xp-level{font-size:11px;font-weight:900;color:var(--violet);white-space:nowrap}
+.xp-track{width:52px;height:5px;background:var(--border);border-radius:99px;overflow:hidden}
+.xp-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--violet),var(--sky));transition:width .6s ease}
+
+/* ─── QUEST CARD ─────────────────────────────────────────── */
+.quest-card{
+  background:linear-gradient(135deg,#150d30,#0e1830);
+  border:1px solid rgba(167,139,250,.4);
+  border-radius:16px;padding:13px 15px;margin-bottom:12px;
+}
+.quest-tag{font-size:10px;font-weight:800;color:var(--violet);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.quest-name{font-size:14px;font-weight:700;margin-bottom:6px;line-height:1.3}
+.quest-footer{display:flex;align-items:center;justify-content:space-between}
+.quest-xp-chip{
+  display:inline-block;background:rgba(167,139,250,.18);color:var(--violet);
+  border-radius:6px;padding:2px 9px;font-size:11px;font-weight:800;
+}
+.quest-prog-wrap{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted)}
+.quest-bar{width:60px;height:4px;background:var(--border);border-radius:99px;overflow:hidden}
+.quest-bar-fill{height:100%;background:var(--violet);border-radius:99px;transition:width .4s ease}
+.quest-done-chip{font-size:11px;font-weight:800;color:var(--emerald)}
+
+/* ─── XP CHIP ON HABIT CARDS ─────────────────────────────── */
+.xp-chip{font-size:10px;font-weight:800;color:var(--violet);opacity:.7;min-width:28px;text-align:right;margin-right:4px}
+
+/* ─── LEVEL-UP OVERLAY ───────────────────────────────────── */
+#levelUpOverlay{
+  position:fixed;inset:0;z-index:600;
+  background:rgba(7,11,20,.92);
+  display:flex;align-items:center;justify-content:center;
+  animation:fadeIn .35s;
+}
+.levelup-card{
+  background:var(--card);border:2px solid var(--amber);
+  border-radius:28px;padding:40px 32px;text-align:center;
+  max-width:300px;width:calc(100% - 48px);
+  animation:levelPop .5s cubic-bezier(.34,1.56,.64,1);
+  box-shadow:0 0 60px rgba(252,211,77,.2);
+}
+.levelup-stars{font-size:20px;margin-bottom:8px;letter-spacing:8px}
+.levelup-badge{font-size:68px;line-height:1;margin-bottom:8px}
+.levelup-word{font-size:12px;font-weight:900;color:var(--amber);letter-spacing:3px;text-transform:uppercase;margin-bottom:10px}
+.levelup-name{font-size:24px;font-weight:900;
+  background:linear-gradient(135deg,var(--amber),var(--sky));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:4px;}
+.levelup-sub{font-size:12px;color:var(--muted)}
+@keyframes levelPop{from{transform:scale(.5);opacity:0}70%{transform:scale(1.12)}to{transform:scale(1);opacity:1}}
+
+/* ─── JOURNEY TAB ────────────────────────────────────────── */
+.hero-card{
+  background:linear-gradient(135deg,#1a0f35,#0f1535,#070B14);
+  border:1px solid rgba(167,139,250,.4);
+  border-radius:20px;padding:22px 20px;margin-bottom:14px;text-align:center;
+}
+.hero-level-num{font-size:52px;font-weight:900;line-height:1;margin-bottom:4px}
+.hero-title{font-size:17px;font-weight:900;margin-bottom:2px}
+.hero-subtitle{font-size:12px;color:var(--muted);margin-bottom:16px}
+.hero-xp-track{height:10px;background:var(--border);border-radius:99px;overflow:hidden;margin-bottom:6px}
+.hero-xp-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--violet),var(--sky));transition:width .8s cubic-bezier(.4,0,.2,1)}
+.hero-xp-label{font-size:11px;color:var(--muted)}
+.hero-total-xp{font-size:12px;font-weight:700;color:var(--violet);margin-top:8px}
+
+/* Journey quest section */
+.journey-quest-label{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1.2px;margin:14px 0 8px}
+.weekly-quest-card{
+  background:linear-gradient(135deg,#0f1e35,#070b1a);
+  border:1px solid rgba(56,189,248,.3);
+  border-radius:16px;padding:13px 15px;margin-bottom:12px;
+}
+.weekly-quest-card .quest-tag{color:var(--sky)}
+.weekly-quest-card .quest-xp-chip{background:rgba(56,189,248,.15);color:var(--sky)}
+
+/* Badge full list (Journey tab) */
+.badge-full{
+  display:flex;align-items:center;gap:12px;
+  padding:11px 0;border-bottom:1px solid var(--border);
+}
+.badge-full:last-child{border-bottom:none}
+.badge-full-emoji{font-size:26px;flex-shrink:0;width:36px;text-align:center}
+.badge-full-info{flex:1;min-width:0}
+.badge-full-name{font-size:13px;font-weight:700}
+.badge-full-desc{font-size:11px;color:var(--muted);margin-top:2px}
+.badge-full-date{font-size:10px;color:var(--emerald);margin-top:2px;font-weight:700}
+.badge-full.locked .badge-full-emoji{opacity:.25;filter:grayscale(1)}
+.badge-full.locked .badge-full-name{color:var(--muted)}
+.badge-full.locked .badge-full-desc{opacity:.6}
+
+/* XP history bars */
+.xp-history-row{display:flex;align-items:center;gap:8px;padding:5px 0}
+.xp-day-label{font-size:10px;color:var(--muted);width:26px;flex-shrink:0;text-align:right}
+.xp-bar-track{flex:1;height:8px;background:var(--border);border-radius:99px;overflow:hidden}
+.xp-bar-fill{height:100%;background:linear-gradient(90deg,var(--violet),var(--indigo));border-radius:99px;transition:width .6s ease}
+.xp-day-amt{font-size:10px;font-weight:700;color:var(--violet);width:40px;text-align:right}
+
+/* Finance XP bar */
+.finance-xp-bar{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:14px;padding:10px 14px;margin-bottom:12px;
+  display:flex;align-items:center;gap:10px;
+}
+.finance-xp-label{font-size:11px;color:var(--muted);flex-shrink:0}
+.finance-xp-track{flex:1;height:6px;background:var(--border);border-radius:99px;overflow:hidden}
+.finance-xp-fill{height:100%;background:linear-gradient(90deg,var(--violet),var(--sky));border-radius:99px;transition:width .5s ease}
+.finance-xp-amt{font-size:11px;font-weight:800;color:var(--violet);white-space:nowrap}
+
+/* XP toast */
+.toast.xp{border-color:var(--violet);color:var(--violet)}
+
+/* 5-tab bottom nav adjustments */
+.bottom-nav .nav-btn{font-size:8px;padding:9px 0 7px}
 </style>
 </head>
 <body>
@@ -492,6 +610,17 @@ body{
 <div id="app" style="display:none">
 <canvas id="confettiCanvas"></canvas>
 
+<!-- Level-up overlay -->
+<div id="levelUpOverlay" style="display:none" onclick="this.style.display='none'">
+  <div class="levelup-card">
+    <div class="levelup-stars">✦ ✦ ✦</div>
+    <div class="levelup-badge" id="luBadge"></div>
+    <div class="levelup-word">Level Up!</div>
+    <div class="levelup-name" id="luName"></div>
+    <div class="levelup-sub" id="luSub">Tap to continue</div>
+  </div>
+</div>
+
 <!-- Header -->
 <div class="header">
   <div class="header-row">
@@ -500,7 +629,10 @@ body{
       <div class="header-date" id="headerDate"></div>
     </div>
     <div style="display:flex;align-items:center;gap:10px">
-      <div class="score-pill" id="headerScore">0/9</div>
+      <div class="xp-pill" id="headerScore" onclick="showTab('journey')">
+        <span class="xp-level" id="headerLevel">Lv.1</span>
+        <div class="xp-track"><div class="xp-fill" id="headerXpFill" style="width:0%"></div></div>
+      </div>
       <button class="lock-icon-btn" onclick="lockApp()" title="Lock">🔒</button>
     </div>
   </div>
@@ -512,6 +644,7 @@ body{
   <button class="nav-tab" onclick="showTab('stats')">Stats</button>
   <button class="nav-tab" onclick="showTab('finance')">Finance</button>
   <button class="nav-tab" onclick="showTab('goals')">Goals</button>
+  <button class="nav-tab" onclick="showTab('journey')">Journey</button>
 </div>
 
 <!-- ── TODAY ───────────────────────────────────────────────── -->
@@ -531,6 +664,9 @@ body{
       <p id="summaryText">Tap a habit to check it off.</p>
     </div>
   </div>
+
+  <!-- Quest card -->
+  <div id="todayQuest"></div>
 
   <!-- Mood tracker -->
   <div class="mood-row">
@@ -558,7 +694,7 @@ body{
 <!-- ── STATS ───────────────────────────────────────────────── -->
 <div class="section" id="tab-stats">
 
-  <div class="kpi-row">
+  <div class="kpi-row" style="grid-template-columns:1fr 1fr;margin-bottom:8px">
     <div class="kpi-card">
       <div class="kpi-num" id="kpiToday" style="color:var(--sky)">–</div>
       <div class="kpi-lbl">Today</div>
@@ -567,9 +703,15 @@ body{
       <div class="kpi-num" id="kpiWeek" style="color:var(--emerald)">–</div>
       <div class="kpi-lbl">This Week</div>
     </div>
+  </div>
+  <div class="kpi-row" style="grid-template-columns:1fr 1fr;margin-bottom:14px">
     <div class="kpi-card">
       <div class="kpi-num" id="kpiBest" style="color:var(--amber)">–</div>
       <div class="kpi-lbl">Best Streak</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-num" id="kpiXp" style="color:var(--violet)">–</div>
+      <div class="kpi-lbl">Total XP</div>
     </div>
   </div>
 
@@ -618,6 +760,13 @@ body{
 
 <!-- ── FINANCE ─────────────────────────────────────────────── -->
 <div class="section" id="tab-finance">
+
+  <!-- Finance XP bar -->
+  <div class="finance-xp-bar" id="financeXpBar">
+    <span class="finance-xp-label">Finance XP</span>
+    <div class="finance-xp-track"><div class="finance-xp-fill" id="financeXpFill" style="width:0%"></div></div>
+    <span class="finance-xp-amt" id="financeXpAmt">0 XP</span>
+  </div>
 
   <!-- Needs -->
   <div class="budget-section">
@@ -685,6 +834,19 @@ body{
   <div class="goal-card" id="milestoneList"></div>
 </div>
 
+<!-- ── JOURNEY ──────────────────────────────────────────────── -->
+<div class="section" id="tab-journey">
+  <div id="heroCard"></div>
+  <div class="journey-quest-label">Daily Quest</div>
+  <div id="journeyDailyQuest"></div>
+  <div class="journey-quest-label">Weekly Quest</div>
+  <div id="journeyWeeklyQuest"></div>
+  <div class="sec-label">Achievements</div>
+  <div class="chart-card" id="journeyBadges"></div>
+  <div class="sec-label">XP This Week</div>
+  <div class="chart-card" id="xpHistory"></div>
+</div>
+
 </div><!-- /#app -->
 
 <div class="toast" id="toast"></div>
@@ -705,6 +867,10 @@ body{
   <button class="nav-btn" id="nav-goals" onclick="showTab('goals')">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
     Goals
+  </button>
+  <button class="nav-btn" id="nav-journey" onclick="showTab('journey')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+    Journey
   </button>
 </div>
 
@@ -780,6 +946,396 @@ const SAVINGS_ITEMS = [
 ];
 const FUND_MONTHS = ['Jun 2026','Jul 2026','Aug 2026','Sep 2026','Oct 2026','Nov 2026','Dec 2026'];
 
+const LEVELS = [
+  { level:1,  title:'Mubtadi',     subtitle:'Beginner',    xp:0,     color:'var(--muted)', badge:'🌱' },
+  { level:2,  title:'Muraqib',     subtitle:'Watchful',    xp:300,   color:'var(--muted)', badge:'👁️' },
+  { level:3,  title:'Mujahid',     subtitle:'Striving',    xp:800,   color:'var(--muted)', badge:'⚔️' },
+  { level:4,  title:'Salik',       subtitle:'Wayfarer',    xp:1800,  color:'var(--sky)',   badge:'🧭' },
+  { level:5,  title:'Mukhlis',     subtitle:'Sincere',     xp:3500,  color:'var(--sky)',   badge:'💎' },
+  { level:6,  title:'Mutawakkil',  subtitle:'Trusting',    xp:6000,  color:'var(--teal)',  badge:'🌊' },
+  { level:7,  title:'Zahid',       subtitle:'Disciplined', xp:9500,  color:'var(--teal)',  badge:'🏔️' },
+  { level:8,  title:'Wali',        subtitle:'Guardian',    xp:14000, color:'var(--violet)','badge':'🛡️' },
+  { level:9,  title:'Hakim',       subtitle:'Wise',        xp:20000, color:'var(--violet)', badge:'📜' },
+  { level:10, title:'Khalifah',    subtitle:'Steward',     xp:28000, color:'var(--amber)',  badge:'👑' },
+];
+
+const BADGES_V2 = [
+  { id:'first',       emoji:'🌱', label:'First Step',       desc:'Complete any habit for the first time',
+    check:(habits,totals)=> Object.keys(habits).length >= 1 },
+  { id:'perfect',     emoji:'💎', label:'Perfect Day',       desc:'Complete all 15 habits in one day',
+    check:(habits,totals)=> Object.keys(habits).some(ds => HABIT_IDS.every(id => habits[ds]?.[id])) },
+  { id:'gym10',       emoji:'🏋️', label:'Iron Will',         desc:'Gym/swim/active 10 times',
+    check:(habits,totals)=> (totals['gym']||0) >= 10 },
+  { id:'malay10',     emoji:'🗣️', label:'Linguist',          desc:'Language lesson 10 times',
+    check:(habits,totals)=> (totals['malay']||0) >= 10 },
+  { id:'read10',      emoji:'📖', label:'Bookworm',          desc:'Read 20min+ 10 times',
+    check:(habits,totals)=> (totals['read']||0) >= 10 },
+  { id:'prayer_week', emoji:'🕌', label:'Full Salah Week',   desc:'All 5 prayers every day for 7 days in a row',
+    check:(habits,totals)=> {
+      const dates = Object.keys(habits).sort();
+      let streak = 0;
+      for (const ds of dates) { if (PRAYER_IDS.every(id => habits[ds]?.[id])) { streak++; if (streak>=7) return true; } else streak=0; }
+      return false;
+    }},
+  { id:'fajr_streak', emoji:'🌄', label:'Dawn Warrior',      desc:'Fajr prayer 14 days in a row',
+    check:(habits,totals)=> bestStreak('fajr') >= 14 },
+  { id:'level5',      emoji:'⚔️', label:'Mukhlis',           desc:'Reach Level 5',
+    check:(habits,totals,xp)=> getLevel(xp.total||0).level >= 5 },
+  { id:'level10',     emoji:'👑', label:'Khalifah',          desc:'Reach Level 10',
+    check:(habits,totals,xp)=> getLevel(xp.total||0).level >= 10 },
+  { id:'budget_month',emoji:'💳', label:'Finance Pro',       desc:'Stay within budget in all categories for a full month',
+    check:(habits,totals,xp)=> !!(xp.finance && Object.values(xp.finance).some(f => f.needsBudgetCredited && f.wantsBudgetCredited)) },
+  { id:'weekly_sweep',emoji:'🎯', label:'Weekly Sweep',      desc:'Complete all 5 weekly goals in one week',
+    check:(habits,totals,xp)=> !!(xp.badges?.weekly_sweep) || !!(db().weekly && Object.values(db().weekly).some(w => WEEKLY_HABITS.every(h => w[h.id]))) },
+  { id:'streak_30',   emoji:'🔥', label:'Unbreakable',       desc:'Any single habit streak of 30 days',
+    check:(habits,totals)=> HABIT_IDS.some(id => bestStreak(id) >= 30) },
+];
+
+// ═══════════════════════════════════════════════════════════════
+// XP ENGINE
+// ═══════════════════════════════════════════════════════════════
+function getLevel(totalXp) {
+  let lvl = LEVELS[0];
+  for (const l of LEVELS) { if (totalXp >= l.xp) lvl = l; else break; }
+  const idx = LEVELS.indexOf(lvl);
+  const next = LEVELS[idx + 1];
+  const xpInLevel = totalXp - lvl.xp;
+  const xpNeeded  = next ? next.xp - lvl.xp : 1;
+  return { ...lvl, next, xpInLevel, xpNeeded, progress: next ? Math.min(xpInLevel / xpNeeded, 1) : 1 };
+}
+
+function migrateXp() {
+  const data = db();
+  if (!data.xp) {
+    data.xp = { total:0, daily:{}, weekly:{}, finance:{}, streakBonuses:{}, badges:{} };
+    dbSave(data);
+  }
+}
+
+function awardXp(amount, label) {
+  const data  = db();
+  const xp    = data.xp;
+  const dk    = todayStr();
+  const oldTotal = xp.total;
+  xp.total += amount;
+  if (!xp.daily[dk]) xp.daily[dk] = { earned:0, habits:{}, moodCredited:false, questCredited:false };
+  xp.daily[dk].earned = (xp.daily[dk].earned || 0) + amount;
+  dbSave(data);
+  checkLevelUp(oldTotal, xp.total);
+  checkBadges();
+  updateHeaderXp();
+  showToast(`+${amount} XP · ${label}`, 'xp');
+}
+
+function checkLevelUp(oldXp, newXp) {
+  for (const l of LEVELS) {
+    if (l.xp > oldXp && l.xp <= newXp) {
+      const el = document.getElementById('levelUpOverlay');
+      document.getElementById('luBadge').textContent = l.badge;
+      document.getElementById('luName').textContent  = `${l.title} · ${l.subtitle}`;
+      document.getElementById('luSub').textContent   = `Level ${l.level} — Tap to continue`;
+      el.style.display = 'flex';
+      setTimeout(() => { if (el.style.display !== 'none') el.style.display = 'none'; }, 3500);
+    }
+  }
+}
+
+function updateHeaderXp() {
+  const xp  = db().xp || { total:0 };
+  const lvl = getLevel(xp.total);
+  const el  = document.getElementById('headerLevel');
+  const bar = document.getElementById('headerXpFill');
+  if (el)  el.textContent  = `Lv.${lvl.level} ${lvl.title}`;
+  if (bar) bar.style.width = (lvl.progress * 100) + '%';
+}
+
+function awardHabitXp(id, dateKey) {
+  const data = db();
+  const xp   = data.xp;
+  if (!xp.daily[dateKey]) xp.daily[dateKey] = { earned:0, habits:{}, moodCredited:false, questCredited:false };
+  if (xp.daily[dateKey].habits[id]) return;
+  xp.daily[dateKey].habits[id] = true;
+  dbSave(data);
+
+  const isPrayer = PRAYER_IDS.includes(id);
+  awardXp(isPrayer ? 15 : 10, HABITS[id].name);
+
+  const dayData = (db().habits || {})[dateKey] || {};
+  const prayersDone     = PRAYER_IDS.filter(pid => dayData[pid]).length;
+  const nonPrayerDone   = HABIT_IDS.filter(hid => !PRAYER_IDS.includes(hid) && dayData[hid]).length;
+  const data2 = db(); const xp2 = data2.xp;
+  if (!xp2.daily[dateKey]) xp2.daily[dateKey] = { earned:0, habits:{}, moodCredited:false, questCredited:false };
+  const dl = xp2.daily[dateKey];
+
+  if (prayersDone === 5 && !dl.prayerBonusDone) {
+    dl.prayerBonusDone = true; dbSave(data2); awardXp(25, 'Full Salah Bonus');
+  }
+  const data3 = db(); const xp3 = data3.xp; const dl3 = xp3.daily[dateKey];
+  if (nonPrayerDone === 10 && !dl3.habitBonusDone) {
+    dl3.habitBonusDone = true; dbSave(data3); awardXp(30, 'All Habits Bonus');
+  }
+  const data4 = db(); const xp4 = data4.xp; const dl4 = xp4.daily[dateKey];
+  const allDone = HABIT_IDS.every(hid => dayData[hid] || hid === id);
+  if (allDone && prayersDone === 5 && nonPrayerDone + (isPrayer ? 0 : 1) === 10 && !dl4.perfectBonusDone) {
+    dl4.perfectBonusDone = true; dbSave(data4); awardXp(50, 'Perfect Day Bonus');
+  }
+
+  awardStreakBonus(id);
+  checkDailyQuestCompletion(dateKey);
+}
+
+function awardStreakBonus(id) {
+  const s = streak(id);
+  const data = db(); const xp = data.xp;
+  if (!xp.streakBonuses[id]) xp.streakBonuses[id] = {};
+  const sb = xp.streakBonuses[id];
+  const tiers = [[3,15],[7,30],[14,50],[30,100]];
+  for (const [days, pts] of tiers) {
+    if (s >= days && !sb[days]) {
+      sb[days] = true; dbSave(data);
+      awardXp(pts, `${days}-Day Streak: ${HABITS[id].name}`);
+      return;
+    }
+  }
+}
+
+function awardMoodXp(dateKey) {
+  const data = db(); const xp = data.xp;
+  if (!xp.daily[dateKey]) xp.daily[dateKey] = { earned:0, habits:{}, moodCredited:false };
+  if (xp.daily[dateKey].moodCredited) return;
+  xp.daily[dateKey].moodCredited = true;
+  dbSave(data);
+  awardXp(5, 'Mood logged');
+}
+
+function awardWeeklyGoalXp(goalId, wk) {
+  const data = db(); const xp = data.xp;
+  if (!xp.weekly[wk]) xp.weekly[wk] = { earned:0, goals:{}, sweepCredited:false };
+  if (xp.weekly[wk].goals[goalId]) return;
+  xp.weekly[wk].goals[goalId] = true;
+  dbSave(data);
+  awardXp(20, 'Weekly Goal');
+
+  const weekly = (db().weekly || {})[wk] || {};
+  const allDone = WEEKLY_HABITS.every(h => weekly[h.id]);
+  const data2 = db(); const xp2 = data2.xp;
+  if (!xp2.weekly[wk]) xp2.weekly[wk] = { earned:0, goals:{}, sweepCredited:false };
+  if (allDone && !xp2.weekly[wk].sweepCredited) {
+    xp2.weekly[wk].sweepCredited = true; dbSave(data2);
+    awardXp(40, 'Weekly Sweep Bonus');
+  }
+}
+
+function awardFinanceXp(catId, mk) {
+  const data = db(); const xp = data.xp;
+  if (!xp.finance[mk]) xp.finance[mk] = { earned:0, categories:{}, needsBudgetCredited:false, wantsBudgetCredited:false, fundCredited:false };
+  const fm = xp.finance[mk];
+  if (fm.categories[catId]) return;
+  fm.categories[catId] = true;
+  dbSave(data);
+  awardXp(10, 'Budget entry logged');
+
+  const spent = (db().spent || {})[mk] || {};
+  const data2 = db(); const xp2 = data2.xp;
+  if (!xp2.finance[mk]) xp2.finance[mk] = { earned:0, categories:{}, needsBudgetCredited:false, wantsBudgetCredited:false, fundCredited:false };
+  const fm2 = xp2.finance[mk];
+  const needsOk = NEEDS_ITEMS.every(i => (Number(spent[i.id])||0) <= i.limit && (Number(spent[i.id])||0) > 0);
+  if (needsOk && !fm2.needsBudgetCredited) {
+    fm2.needsBudgetCredited = true; dbSave(data2); awardXp(50, 'Needs Budget Master');
+  }
+  const data3 = db(); const xp3 = data3.xp;
+  if (!xp3.finance[mk]) xp3.finance[mk] = { earned:0, categories:{}, needsBudgetCredited:false, wantsBudgetCredited:false, fundCredited:false };
+  const fm3 = xp3.finance[mk];
+  const wantsOk = WANTS_ITEMS.every(i => (Number(spent[i.id])||0) <= i.limit && (Number(spent[i.id])||0) > 0);
+  if (wantsOk && !fm3.wantsBudgetCredited) {
+    fm3.wantsBudgetCredited = true; dbSave(data3); awardXp(30, 'Wants Budget Master');
+  }
+}
+
+function awardFundXp(mk) {
+  const data = db(); const xp = data.xp;
+  if (!xp.finance[mk]) xp.finance[mk] = { earned:0, categories:{}, needsBudgetCredited:false, wantsBudgetCredited:false, fundCredited:false };
+  if (xp.finance[mk].fundCredited) return;
+  xp.finance[mk].fundCredited = true;
+  dbSave(data);
+  awardXp(20, 'Emergency fund saved');
+}
+
+function checkBadges() {
+  const data   = db();
+  const habits = data.habits || {};
+  const totals = {};
+  HABIT_IDS.forEach(id => totals[id] = 0);
+  Object.keys(habits).forEach(ds => HABIT_IDS.forEach(id => { if (habits[ds]?.[id]) totals[id]++; }));
+  const xp = data.xp || { badges:{} };
+  if (!xp.badges) xp.badges = {};
+  let changed = false;
+  for (const b of BADGES_V2) {
+    if (!xp.badges[b.id] && b.check(habits, totals, xp)) {
+      xp.badges[b.id] = todayStr();
+      changed = true;
+    }
+  }
+  if (changed) dbSave(data);
+}
+
+function getDailyQuest(dateKey) {
+  const data    = db();
+  const dayData = (data.habits || {})[dateKey] || {};
+  const prayersDone   = PRAYER_IDS.filter(id => dayData[id]).length;
+  const nonPrayerDone = HABIT_IDS.filter(id => !PRAYER_IDS.includes(id) && dayData[id]).length;
+  const fajrS = streak('fajr');
+  const gymDates = Object.keys(data.habits || {}).sort().reverse();
+  let gymDaysAgo = 99;
+  for (let i = 0; i < gymDates.length; i++) {
+    if ((data.habits[gymDates[i]] || {})['gym']) { gymDaysAgo = i; break; }
+  }
+  const mood = (data.mood || {})[dateKey];
+
+  if (prayersDone < 5) return {
+    id:'prayers', title:'Daily Quest', name:'Complete all 5 prayers today',
+    xpReward:25, progress:prayersDone, target:5
+  };
+  if (fajrS >= 1 && fajrS < 14) return {
+    id:'fajr', title:'Daily Quest', name:`Keep your Fajr streak alive (${fajrS} days)`,
+    xpReward:50, progress: Math.min(fajrS,7), target:7
+  };
+  const streakHabits = HABIT_IDS.filter(id => !PRAYER_IDS.includes(id) && streak(id) >= 3 && !dayData[id]);
+  if (streakHabits.length > 0) return {
+    id:'streak', title:'Daily Quest', name:`Keep your ${HABITS[streakHabits[0]].name} streak alive`,
+    xpReward:30, progress: dayData[streakHabits[0]] ? 1 : 0, target:1
+  };
+  if (gymDaysAgo >= 3 && !dayData['gym']) return {
+    id:'gym', title:'Daily Quest', name:"Hit the gym today — it's been a while",
+    xpReward:25, progress:dayData['gym'] ? 1 : 0, target:1
+  };
+  if (!mood) return {
+    id:'mood', title:'Daily Quest', name:'Log your energy level today',
+    xpReward:5, progress:mood ? 1 : 0, target:1
+  };
+  return {
+    id:'default', title:'Daily Quest', name:'Complete 10+ habits today',
+    xpReward:20, progress:nonPrayerDone, target:10
+  };
+}
+
+function getWeeklyQuest() {
+  const wk     = weekKey(todayStr());
+  const weekly = (db().weekly || {})[wk] || {};
+  const done   = WEEKLY_HABITS.filter(h => weekly[h.id]).length;
+  if (done === 0) return { title:'Weekly Quest', name:'Knock out your first weekly goal this week', xpReward:30, progress:0, target:1 };
+  if (done < 5)  return { title:'Weekly Quest', name:`Complete all 5 weekly habits (${done}/5 done)`, xpReward:50, progress:done, target:5 };
+  return { title:'Weekly Quest', name:'Weekly goals complete — keep the streak!', xpReward:0, progress:5, target:5, done:true };
+}
+
+function checkDailyQuestCompletion(dateKey) {
+  const q = getDailyQuest(dateKey);
+  const data = db(); const xp = data.xp;
+  if (!xp.daily[dateKey]) xp.daily[dateKey] = { earned:0, habits:{}, moodCredited:false, questCredited:false };
+  if (xp.daily[dateKey].questCredited) return;
+  if (q.progress >= q.target) {
+    xp.daily[dateKey].questCredited = true;
+    dbSave(data);
+    awardXp(q.xpReward, 'Quest Complete!');
+  }
+}
+
+function questCardHTML(q, cardClass) {
+  const cls  = cardClass || 'quest-card';
+  const prog = q.target > 0 ? Math.min(q.progress / q.target, 1) : 1;
+  const isDone = q.progress >= q.target;
+  return `<div class="${cls}">
+    <div class="quest-tag">${q.title}</div>
+    <div class="quest-name">${q.name}</div>
+    <div class="quest-footer">
+      ${isDone
+        ? `<span class="quest-done-chip">✓ Complete</span>`
+        : `<span class="quest-xp-chip">+${q.xpReward} XP</span>`}
+      ${q.target > 1 ? `<div class="quest-prog-wrap">
+        <div class="quest-bar"><div class="quest-bar-fill" style="width:${prog*100}%"></div></div>
+        <span>${q.progress}/${q.target}</span></div>` : ''}
+    </div>
+  </div>`;
+}
+
+function renderJourney() {
+  const data   = db();
+  const xp     = data.xp || { total:0, daily:{}, badges:{} };
+  const lvl    = getLevel(xp.total || 0);
+  const habits = data.habits || {};
+  const totals = {};
+  HABIT_IDS.forEach(id => totals[id] = 0);
+  Object.keys(habits).forEach(ds => HABIT_IDS.forEach(id => { if (habits[ds]?.[id]) totals[id]++; }));
+
+  // Hero card
+  document.getElementById('heroCard').innerHTML = `
+    <div class="hero-card">
+      <div class="hero-level-num" style="color:${lvl.color}">${lvl.badge}</div>
+      <div class="hero-title" style="color:${lvl.color}">Level ${lvl.level} · ${lvl.title}</div>
+      <div class="hero-subtitle">${lvl.subtitle}</div>
+      <div class="hero-xp-track"><div class="hero-xp-fill" style="width:${lvl.progress*100}%"></div></div>
+      <div class="hero-xp-label">${lvl.next
+        ? `${lvl.xpInLevel.toLocaleString()} / ${lvl.xpNeeded.toLocaleString()} XP to ${lvl.next.title}`
+        : 'Max Level Reached'}</div>
+      <div class="hero-total-xp">${(xp.total||0).toLocaleString()} Total XP</div>
+    </div>`;
+
+  // Quests
+  document.getElementById('journeyDailyQuest').innerHTML  = questCardHTML(getDailyQuest(todayStr()));
+  document.getElementById('journeyWeeklyQuest').innerHTML = questCardHTML(getWeeklyQuest(), 'weekly-quest-card');
+
+  // Badges
+  const badgesEl = document.getElementById('journeyBadges');
+  badgesEl.innerHTML = '';
+  for (const b of BADGES_V2) {
+    const earnDate = (xp.badges || {})[b.id];
+    const earned   = !!earnDate || b.check(habits, totals, xp);
+    const el = document.createElement('div');
+    el.className = 'badge-full' + (earned ? '' : ' locked');
+    el.innerHTML = `
+      <div class="badge-full-emoji">${b.emoji}</div>
+      <div class="badge-full-info">
+        <div class="badge-full-name">${b.label}</div>
+        <div class="badge-full-desc">${b.desc}</div>
+        ${earned && earnDate ? `<div class="badge-full-date">Earned ${earnDate}</div>` : ''}
+      </div>`;
+    badgesEl.appendChild(el);
+  }
+
+  // XP history (last 7 days)
+  const histEl = document.getElementById('xpHistory');
+  histEl.innerHTML = '';
+  let maxDay = 1;
+  const days = [];
+  for (let i = 6; i >= 0; i--) {
+    const ds = offsetStr(-i);
+    const earned = (xp.daily || {})[ds]?.earned || 0;
+    days.push({ ds, earned });
+    if (earned > maxDay) maxDay = earned;
+  }
+  days.forEach(({ ds, earned }) => {
+    const label = new Date(ds + 'T00:00:00').toLocaleDateString('en-MY', { weekday:'short' }).slice(0,3);
+    const pct   = Math.min(earned / maxDay * 100, 100);
+    const row   = document.createElement('div');
+    row.className = 'xp-history-row';
+    row.innerHTML = `
+      <div class="xp-day-label">${label}</div>
+      <div class="xp-bar-track"><div class="xp-bar-fill" style="width:${pct}%"></div></div>
+      <div class="xp-day-amt">${earned > 0 ? earned : '–'}</div>`;
+    histEl.appendChild(row);
+  });
+}
+
+function getFinanceXpThisMonth() {
+  const mk = monthKey(todayStr());
+  const fm = (db().xp?.finance || {})[mk];
+  if (!fm) return { earned:0, max:130 };
+  const catCount  = Object.keys(fm.categories || {}).length;
+  const catXp     = Math.min(catCount * 10, 130);
+  const bonusXp   = (fm.needsBudgetCredited ? 50 : 0) + (fm.wantsBudgetCredited ? 30 : 0) + (fm.fundCredited ? 20 : 0);
+  return { earned: catXp + bonusXp, max: 130 + 100 };
+}
+
 // ═══════════════════════════════════════════════════════════════
 // STORAGE
 // ═══════════════════════════════════════════════════════════════
@@ -840,6 +1396,8 @@ function unlockApp() {
   document.getElementById('lockScreen').style.display = 'none';
   document.getElementById('app').style.display = 'block';
   document.getElementById('bottomNav').style.display = 'flex';
+  migrateXp();
+  updateHeaderXp();
   renderToday();
 }
 
@@ -951,7 +1509,7 @@ function renderToday() {
 
   // Header
   document.getElementById('headerDate').textContent = fmtDate(todayStr());
-  document.getElementById('headerScore').textContent = `${done}/${total}`;
+  updateHeaderXp();
 
   // Ring
   const circ = 188.5;
@@ -977,6 +1535,10 @@ function renderToday() {
   document.querySelectorAll('.mood-btn').forEach(b => {
     b.classList.toggle('active', Number(b.dataset.mood) === mood);
   });
+
+  // Quest card (today only)
+  const questEl = document.getElementById('todayQuest');
+  if (questEl) questEl.innerHTML = isToday ? questCardHTML(getDailyQuest(dateKey)) : '';
 
   // Groups
   const container = document.getElementById('habitGroups');
@@ -1025,9 +1587,11 @@ function renderToday() {
         dd[id] = !dd[id];
         dbSave(d2);
         const nowDone = HABIT_IDS.filter(hid => dd[hid]).length;
-        if (dd[id]) {
-          showToast(nowDone === HABIT_IDS.length ? '🎉 100% Complete!' : `✓ ${h.name}`, nowDone === HABIT_IDS.length ? 'party' : 'success');
-          if (nowDone === HABIT_IDS.length && isToday) launchConfetti();
+        if (dd[id] && isToday) {
+          awardHabitXp(id, dateKey);
+          if (nowDone === HABIT_IDS.length) launchConfetti();
+        } else if (!dd[id]) {
+          showToast(`Unmarked: ${h.name}`, '');
         }
         renderToday();
       });
@@ -1062,8 +1626,10 @@ function renderToday() {
 
 function setMood(n) {
   const data = db();
-  ensure(data, 'mood', {})[viewStr()] = n;
+  const dk = viewStr();
+  ensure(data, 'mood', {})[dk] = n;
   dbSave(data);
+  if (dk === todayStr()) awardMoodXp(dk);
   renderToday();
 }
 
@@ -1098,9 +1664,12 @@ function renderStats() {
   }
   const weekPct = weekTotal > 0 ? Math.round(weekDone / weekTotal * 100) : 0;
 
-  document.getElementById('kpiToday').textContent  = `${todayDone}/9`;
+  document.getElementById('kpiToday').textContent  = `${todayDone}/${HABIT_IDS.length}`;
   document.getElementById('kpiWeek').textContent   = `${weekPct}%`;
   document.getElementById('kpiBest').textContent   = overallBestStreak();
+  const totalXp = db().xp?.total || 0;
+  const kpiXpEl = document.getElementById('kpiXp');
+  if (kpiXpEl) { kpiXpEl.textContent = totalXp >= 1000 ? `${(totalXp/1000).toFixed(1)}k` : totalXp; }
 
   // Heatmap: 15 weeks × 7 days, starting from Mon
   const grid = document.getElementById('heatmapGrid');
@@ -1123,7 +1692,7 @@ function renderStats() {
       const isFuture = d > today_d;
       let cls = 'hm-cell';
       if (!isFuture && habits[ds]) {
-        const pct = done / 9;
+        const pct = done / HABIT_IDS.length;
         if (pct > .88) cls += ' l5';
         else if (pct > .66) cls += ' l4';
         else if (pct > .44) cls += ' l3';
@@ -1206,25 +1775,21 @@ function renderStats() {
   });
 
   // Achievements
-  const BADGES = [
-    { id:'first',   emoji:'🌱', label:'First Day',    check: () => allDates.length >= 1 },
-    { id:'week',    emoji:'7️⃣', label:'7-Day Streak', check: () => overallBestStreak() >= 7 },
-    { id:'month',   emoji:'📅', label:'30-Day Streak',check: () => overallBestStreak() >= 30 },
-    { id:'perfect', emoji:'💎', label:'Perfect Day',  check: () => allDates.some(ds => HABIT_IDS.every(id => habits[ds]?.[id])) },
-    { id:'gym10',   emoji:'🏋️', label:'Gym x10',      check: () => totals['gym'] >= 10 },
-    { id:'malay10', emoji:'🗣️', label:'Malay x10',    check: () => totals['malay'] >= 10 },
-    { id:'read10',  emoji:'📖', label:'Reader x10',   check: () => totals['read'] >= 10 },
-    { id:'all9',    emoji:'⭐', label:'All 9 Habits', check: () => allDates.some(ds => HABIT_IDS.every(id => habits[ds]?.[id])) },
-  ];
+  const xpData = data.xp || { badges:{} };
   const badges = document.getElementById('badgesRow');
   badges.innerHTML = '';
-  BADGES.forEach(b => {
-    const earned = b.check();
+  BADGES_V2.slice(0, 6).forEach(b => {
+    const earned = !!(xpData.badges?.[b.id]) || b.check(habits, totals, xpData);
     const el = document.createElement('div');
     el.className = 'badge' + (earned ? ' earned' : '');
     el.innerHTML = `<span class="badge-emoji">${earned ? b.emoji : '🔒'}</span>${b.label}`;
     badges.appendChild(el);
   });
+  const seeAll = document.createElement('div');
+  seeAll.style.cssText = 'width:100%;text-align:center;padding:8px 0 2px;font-size:12px;color:var(--sky);cursor:pointer;font-weight:700';
+  seeAll.textContent = 'See all achievements →';
+  seeAll.onclick = () => showTab('journey');
+  badges.appendChild(seeAll);
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -1266,6 +1831,13 @@ function renderFinance() {
   renderItems(NEEDS_ITEMS,   'needsItems',   4000, 'needsTotal',   '#38BDF8');
   renderItems(WANTS_ITEMS,   'wantsItems',   2400, 'wantsTotal',   '#FBBF24');
   renderItems(SAVINGS_ITEMS, 'savingsItems', 1600, 'savingsTotal', '#34D399');
+
+  const fxp = getFinanceXpThisMonth();
+  const fPct = Math.min(fxp.earned / fxp.max * 100, 100);
+  const fillEl = document.getElementById('financeXpFill');
+  const amtEl  = document.getElementById('financeXpAmt');
+  if (fillEl) fillEl.style.width = fPct + '%';
+  if (amtEl)  amtEl.textContent  = `${fxp.earned}/${fxp.max} XP`;
   document.getElementById('savingsTotal').textContent =
     `Saved: RM ${SAVINGS_ITEMS.reduce((s,i) => s + (Number(spent[i.id])||0), 0).toLocaleString()}`;
 
@@ -1307,6 +1879,7 @@ function updateSpent(id, mk, val) {
   const data = db();
   ensure(ensure(data,'spent',{}), mk, {})[id] = Number(val) || 0;
   dbSave(data);
+  if (Number(val) > 0) awardFinanceXp(id, mk);
   renderFinance();
 }
 
@@ -1314,6 +1887,7 @@ function updateFund(mk, val) {
   const data = db();
   ensure(data, 'fund', {})[mk] = Number(val) || 0;
   dbSave(data);
+  if (Number(val) > 0) awardFundXp(mk);
   renderFinance();
 }
 
@@ -1352,7 +1926,8 @@ function renderGoals() {
       const w2 = ensure(ensure(d2,'weekly',{}), wk, {});
       w2[h.id] = !w2[h.id];
       dbSave(d2);
-      showToast(w2[h.id] ? `✓ ${h.label}` : 'Unmarked', 'success');
+      if (w2[h.id]) awardWeeklyGoalXp(h.id, wk);
+      else showToast('Unmarked', '');
       renderGoals();
     });
     wl.appendChild(row);
@@ -1440,6 +2015,7 @@ function showTab(name) {
   if (name === 'stats')   renderStats();
   if (name === 'finance') renderFinance();
   if (name === 'goals')   renderGoals();
+  if (name === 'journey') renderJourney();
 }
 
 let toastTimer;
