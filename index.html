@@ -1483,6 +1483,31 @@ function unlockApp() {
   migrateXp();
   updateHeaderXp();
   syncFromCloud().then(() => { migrateXp(); updateHeaderXp(); renderToday(); });
+  requestNotifPermission();
+  scheduleReminder();
+}
+
+let reminderTimer;
+function scheduleReminder() {
+  clearTimeout(reminderTimer);
+  localStorage.setItem('lb2026_lastOpen', Date.now());
+  reminderTimer = setTimeout(() => {
+    if (Notification.permission === 'granted') {
+      new Notification('Life Blueprint 🗺️', {
+        body: "You haven't checked in for 2 hours. How are your habits going?",
+        icon: 'https://salehmohammadmusa.github.io/life-blueprint/icon.png',
+        badge: 'https://salehmohammadmusa.github.io/life-blueprint/icon.png',
+      });
+    }
+    scheduleReminder();
+  }, 2 * 60 * 60 * 1000);
+}
+
+function requestNotifPermission() {
+  if (!('Notification' in window)) return;
+  if (Notification.permission === 'default') {
+    Notification.requestPermission();
+  }
 }
 
 function lockApp() {
