@@ -882,7 +882,8 @@ const HABIT_GROUPS = [
   { id:'prayers',  label:'Daily Prayers',   time:'5 times a day',   emoji:'🕌', habits:['fajr','dhuhr','asr','maghrib','isha'] },
   { id:'morning',  label:'Morning Routine', time:'6–8am',           emoji:'🌅', habits:['wake','morning'] },
   { id:'commute',  label:'Commute',         time:'To & from work',  emoji:'🚌', habits:['malay'] },
-  { id:'evening',  label:'After Work',      time:'7–9pm',           emoji:'💡', habits:['reset','study','read'] },
+  { id:'office',   label:'Office',          time:'In office',       emoji:'🏢', habits:['deepwork'] },
+  { id:'evening',  label:'After Work',      time:'7–9pm',           emoji:'💡', habits:['reset','study','read','groom'] },
   { id:'bedtime',  label:'Bedtime',         time:'10–11pm',         emoji:'🌙', habits:['tidy','nophone','bed'] },
   { id:'anytime',  label:'Any Time',        time:'When scheduled',  emoji:'⚡', habits:['gym'] },
 ];
@@ -902,14 +903,17 @@ const HABITS = {
   nophone: { emoji:'📵', name:'No Phone 30min',      area:'Sleep',    color:'#A78BFA' },
   bed:     { emoji:'🛏️', name:'In Bed on Time',      area:'Sleep',    color:'#A78BFA' },
   read:    { emoji:'📖', name:'Read 20min+',         area:'Mindset',  color:'#34D399' },
-  gym:     { emoji:'🏋️', name:'Gym/Swim/Active',     area:'Fitness',  color:'#FB7185' },
+  gym:      { emoji:'🏋️', name:'Gym/Swim/Active',     area:'Fitness',  color:'#FB7185' },
+  groom:    { emoji:'🪥', name:'Grooming',            area:'Health',   color:'#2DD4BF' },
+  deepwork: { emoji:'🧠', name:'Deep Work 2hr+',      area:'Career',   color:'#38BDF8' },
 };
-const HABIT_IDS = ['fajr','dhuhr','asr','maghrib','isha','malay','study','wake','reset','morning','tidy','nophone','bed','read','gym'];
+const HABIT_IDS = ['fajr','dhuhr','asr','maghrib','isha','malay','study','wake','reset','morning','tidy','nophone','bed','read','gym','groom','deepwork'];
 const PRAYER_IDS = ['fajr','dhuhr','asr','maghrib','isha'];
 
 const WEEKLY_HABITS = [
-  { id:'social',   emoji:'🎉', label:'Attended a social event',    area:'Social' },
-  { id:'reach',    emoji:'🤝', label:'Reached out to someone new', area:'Social' },
+  { id:'social',     emoji:'🎉', label:'Attended a social event',    area:'Social' },
+  { id:'reach',      emoji:'🤝', label:'Reached out to someone new', area:'Social' },
+  { id:'textfriend', emoji:'💬', label:'Texted a friend',            area:'Social' },
   { id:'family',   emoji:'📞', label:'Called family',              area:'Relationships' },
   { id:'budget',   emoji:'💰', label:'Reviewed budget',            area:'Finance' },
   { id:'doclearn', emoji:'📝', label:'Documented learning',        area:'Career' },
