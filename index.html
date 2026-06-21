@@ -907,7 +907,7 @@ const HABITS = {
   read:    { emoji:'📖', name:'Read 20min+',         area:'Mindset',  color:'#34D399' },
   gym:      { emoji:'🏋️', name:'Gym/Swim/Active',     area:'Fitness',  color:'#FB7185' },
   groom:    { emoji:'🪥', name:'Grooming',            area:'Health',   color:'#2DD4BF' },
-  deepwork: { emoji:'🧠', name:'Deep Work 2hr+',      area:'Career',   color:'#38BDF8' },
+  deepwork: { emoji:'🧠', name:'Deep Work 2hr+',      area:'Career',   color:'#38BDF8', weekdayOnly:true },
 };
 const HABIT_IDS = ['fajr','dhuhr','asr','maghrib','isha','malay','study','wake','reset','morning','tidy','nophone','bed','read','gym','groom','deepwork'];
 const PRAYER_IDS = ['fajr','dhuhr','asr','maghrib','isha'];
@@ -1524,6 +1524,8 @@ function fmtShort(ds) {
     { weekday:'short', month:'short', day:'numeric' });
 }
 
+function isWeekend(ds) { const d = new Date(ds + 'T00:00:00').getDay(); return d === 0 || d === 6; }
+
 function weekKey(ds) {
   const d = new Date(ds + 'T00:00:00');
   const jan1 = new Date(d.getFullYear(), 0, 1);
@@ -1583,11 +1585,13 @@ function renderToday() {
   const data    = db();
   const dateKey = viewStr();
   const dayData = ensure(ensure(data, 'habits', {}), dateKey, {});
-  const NON_PRAYER_IDS = HABIT_IDS.filter(id => !PRAYER_IDS.includes(id));
+  const weekend = isWeekend(dateKey);
+  const ACTIVE_IDS = HABIT_IDS.filter(id => !(HABITS[id].weekdayOnly && weekend));
+  const NON_PRAYER_IDS = ACTIVE_IDS.filter(id => !PRAYER_IDS.includes(id));
   const prayersDone = PRAYER_IDS.filter(id => dayData[id]).length;
   const habitsDone  = NON_PRAYER_IDS.filter(id => dayData[id]).length;
-  const done        = HABIT_IDS.filter(id => dayData[id]).length;
-  const total       = HABIT_IDS.length;
+  const done        = ACTIVE_IDS.filter(id => dayData[id]).length;
+  const total       = ACTIVE_IDS.length;
   const pct         = done / total;
   const isToday     = viewOffset === 0;
 
@@ -1628,7 +1632,9 @@ function renderToday() {
   const container = document.getElementById('habitGroups');
   container.innerHTML = '';
   HABIT_GROUPS.forEach(group => {
-    const groupDone = group.habits.filter(id => dayData[id]).length;
+    const activeHabits = group.habits.filter(id => !(HABITS[id].weekdayOnly && weekend));
+    if (activeHabits.length === 0) return;
+    const groupDone = activeHabits.filter(id => dayData[id]).length;
     const div = document.createElement('div');
     div.className = 'habit-group';
     div.innerHTML = `
@@ -1636,14 +1642,14 @@ function renderToday() {
         <span class="group-emoji">${group.emoji}</span>
         <span class="group-name">${group.label}</span>
         <span class="group-time">${group.time}</span>
-        <span class="group-prog">${groupDone}/${group.habits.length}</span>
+        <span class="group-prog">${groupDone}/${activeHabits.length}</span>
       </div>
       <div class="habit-cards" id="group-${group.id}"></div>
     `;
     container.appendChild(div);
 
     const cards = div.querySelector(`#group-${group.id}`);
-    group.habits.forEach(id => {
+    activeHabits.forEach(id => {
       const h = HABITS[id];
       const isDone = !!dayData[id];
       const s = streak(id);
