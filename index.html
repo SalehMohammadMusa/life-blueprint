@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Life Blueprint 2026</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <style>
 :root {
   --bg:      #070B14;
@@ -633,6 +634,7 @@ body{
         <span class="xp-level" id="headerLevel">Lv.1</span>
         <div class="xp-track"><div class="xp-fill" id="headerXpFill" style="width:0%"></div></div>
       </div>
+      <div id="syncDot" title="Sync status" style="width:8px;height:8px;border-radius:50%;background:var(--muted);flex-shrink:0"></div>
       <button class="lock-icon-btn" onclick="lockApp()" title="Lock">🔒</button>
     </div>
   </div>
@@ -997,6 +999,83 @@ const BADGES_V2 = [
 ];
 
 // ═══════════════════════════════════════════════════════════════
+// SUPABASE SYNC
+// ═══════════════════════════════════════════════════════════════
+const SB_URL = 'https://ganhhylrxgmycwbpqqtq.supabase.co';
+const SB_KEY = 'sb_publishable_lTaBO7qG2Ohk8yiHkBC5qg_p49puSx6';
+const sbClient = window.supabase.createClient(SB_URL, SB_KEY);
+const SB_ROW   = 'musa';
+
+function setSyncStatus(status) {
+  const dot = document.getElementById('syncDot');
+  if (!dot) return;
+  dot.style.background = status === 'synced'  ? '#34D399'
+                       : status === 'syncing' ? '#FCD34D'
+                       : status === 'error'   ? '#FB7185'
+                       : 'var(--muted)';
+  dot.title = status === 'synced'  ? 'Synced ✓'
+            : status === 'syncing' ? 'Syncing…'
+            : status === 'error'   ? 'Sync failed — offline?'
+            : 'Not synced';
+}
+
+let syncTimer;
+function scheduleSyncToCloud() {
+  clearTimeout(syncTimer);
+  syncTimer = setTimeout(syncToCloud, 1500);
+}
+
+async function syncToCloud() {
+  try {
+    setSyncStatus('syncing');
+    const { error } = await sbClient.from('user_data').upsert({
+      id: SB_ROW,
+      payload: db(),
+      updated_at: new Date().toISOString()
+    });
+    if (error) throw error;
+    setSyncStatus('synced');
+  } catch(e) {
+    setSyncStatus('error');
+    console.warn('Sync to cloud failed:', e.message);
+  }
+}
+
+async function syncFromCloud() {
+  try {
+    setSyncStatus('syncing');
+    const { data, error } = await sbClient
+      .from('user_data').select('payload').eq('id', SB_ROW).single();
+    if (error && error.code !== 'PGRST116') throw error;
+    if (data?.payload) {
+      const local  = db();
+      const remote = data.payload;
+      const merged = deepMerge(remote, local);
+      dbSave(merged);
+    }
+    setSyncStatus('synced');
+  } catch(e) {
+    setSyncStatus('error');
+    console.warn('Sync from cloud failed:', e.message);
+  }
+}
+
+function deepMerge(base, override) {
+  const result = Object.assign({}, base);
+  for (const key of Object.keys(override || {})) {
+    if (override[key] && typeof override[key] === 'object' && !Array.isArray(override[key])
+        && base[key] && typeof base[key] === 'object') {
+      result[key] = deepMerge(base[key], override[key]);
+    } else if (override[key] !== undefined && override[key] !== null && override[key] !== 0 && override[key] !== false) {
+      result[key] = override[key];
+    } else if (!(key in base)) {
+      result[key] = override[key];
+    }
+  }
+  return result;
+}
+
+// ═══════════════════════════════════════════════════════════════
 // XP ENGINE
 // ═══════════════════════════════════════════════════════════════
 function getLevel(totalXp) {
@@ -1351,7 +1430,7 @@ const PWD_KEY = 'lb2026_pwd';
 function db() {
   try { return JSON.parse(localStorage.getItem(DB_KEY) || '{}'); } catch { return {}; }
 }
-function dbSave(data) { localStorage.setItem(DB_KEY, JSON.stringify(data)); }
+function dbSave(data) { localStorage.setItem(DB_KEY, JSON.stringify(data)); scheduleSyncToCloud(); }
 function ensure(obj, key, def) { if (!obj[key]) obj[key] = def; return obj[key]; }
 
 // ═══════════════════════════════════════════════════════════════
@@ -1403,7 +1482,7 @@ function unlockApp() {
   document.getElementById('bottomNav').style.display = 'flex';
   migrateXp();
   updateHeaderXp();
-  renderToday();
+  syncFromCloud().then(() => { migrateXp(); updateHeaderXp(); renderToday(); });
 }
 
 function lockApp() {
