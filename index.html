@@ -62,6 +62,61 @@ body::after{
   opacity:.5;
 }
 
+/* ─── SPY ANIMATIONS ────────────────────────────────────────── */
+
+/* Tab slide-in */
+.section.active{animation:section-in .3s ease}
+@keyframes section-in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* Habit card stagger */
+@keyframes card-in{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:none}}
+
+/* Check glow flash */
+@keyframes check-flash{
+  0%{box-shadow:0 0 0 rgba(0,255,65,0)}
+  40%{box-shadow:0 0 22px rgba(0,255,65,.6),inset 0 0 10px rgba(0,255,65,.1)}
+  100%{box-shadow:0 0 0 rgba(0,255,65,0)}
+}
+.habit-card.done{animation:check-flash .5s ease}
+
+/* Hot streak pulse */
+.streak.hot{animation:streak-pulse 1.8s ease-in-out infinite}
+@keyframes streak-pulse{0%,100%{opacity:1;text-shadow:0 0 6px var(--orange)}50%{opacity:.7;text-shadow:0 0 12px var(--orange)}}
+
+/* Header glitch */
+.header h1{animation:glitch 6s ease-in-out infinite}
+@keyframes glitch{
+  0%,88%,100%{text-shadow:0 0 10px rgba(0,255,65,.6);transform:none}
+  89%{text-shadow:3px 0 rgba(255,49,49,.8),-3px 0 rgba(0,212,255,.8);transform:translateX(2px)}
+  90%{text-shadow:-3px 0 rgba(255,49,49,.8),3px 0 rgba(0,212,255,.8);transform:translateX(-2px)}
+  91%{text-shadow:0 0 10px rgba(0,255,65,.6);transform:none}
+  93%{text-shadow:2px 0 rgba(255,49,49,.5);transform:translateX(1px)}
+  94%{text-shadow:0 0 10px rgba(0,255,65,.6);transform:none}
+}
+
+/* Lock screen cursor blink */
+.lock-sub::after{content:'_';animation:blink 1s step-end infinite}
+@keyframes blink{50%{opacity:0}}
+
+/* Heatmap cell fade-in */
+@keyframes cell-fade{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:none}}
+
+/* Nav active glow */
+.nav-btn.active svg{filter:drop-shadow(0 0 5px var(--green))}
+.nav-btn.active{text-shadow:0 0 8px rgba(0,255,65,.7)}
+
+/* XP pill glow on update */
+@keyframes xp-ping{0%{box-shadow:0 0 0 rgba(167,139,250,0)}50%{box-shadow:0 0 14px rgba(167,139,250,.5)}100%{box-shadow:0 0 0 rgba(167,139,250,0)}}
+.xp-ping{animation:xp-ping .6s ease}
+
+/* Progress bar scan */
+@keyframes bar-scan{from{background-position:200% 0}to{background-position:-200% 0}}
+.bar-fill,.bi-bar-fill,.fund-fill,.hero-xp-fill{
+  background-size:200% 100%;
+  background-image:linear-gradient(90deg,transparent 0%,rgba(255,255,255,.15) 50%,transparent 100%),linear-gradient(90deg,var(--emerald),var(--sky));
+  animation:bar-scan 3s linear infinite;
+}
+
 /* ─── SPY FONTS ─────────────────────────────────────────────── */
 .kpi-num,.ring-num,.wic-num,.hero-level-num,.hero-total-xp,.xp-day-amt,.hab-pct{
   font-family:'Share Tech Mono',monospace;
@@ -1121,6 +1176,19 @@ function deepMerge(base, override) {
 // ═══════════════════════════════════════════════════════════════
 // XP ENGINE
 // ═══════════════════════════════════════════════════════════════
+function countUp(elId, target, duration, suffix='') {
+  const el = document.getElementById(elId);
+  if (!el) return;
+  const start = Date.now();
+  const tick = () => {
+    const p = Math.min((Date.now() - start) / duration, 1);
+    const ease = 1 - Math.pow(1 - p, 3);
+    el.textContent = (Number.isInteger(target) ? Math.round(target * ease) : (target * ease).toFixed(1)) + suffix;
+    if (p < 1) requestAnimationFrame(tick);
+  };
+  tick();
+}
+
 function getLevel(totalXp) {
   let lvl = LEVELS[0];
   for (const l of LEVELS) { if (totalXp >= l.xp) lvl = l; else break; }
@@ -1172,8 +1240,10 @@ function updateHeaderXp() {
   const lvl = getLevel(xp.total);
   const el  = document.getElementById('headerLevel');
   const bar = document.getElementById('headerXpFill');
-  if (el)  el.textContent  = `Lv.${lvl.level} ${lvl.title}`;
+  const pill = document.getElementById('headerScore');
+  if (el)  el.textContent  = `${lvl.title}`;
   if (bar) bar.style.width = (lvl.progress * 100) + '%';
+  if (pill) { pill.classList.remove('xp-ping'); void pill.offsetWidth; pill.classList.add('xp-ping'); }
 }
 
 function awardHabitXp(id, dateKey) {
@@ -1736,6 +1806,7 @@ function renderToday() {
       const card = document.createElement('div');
       card.className = 'habit-card' + (isDone ? ' done' : '');
       card.style.setProperty('--habit-color', h.color);
+      card.style.animation = `card-in .25s ease ${group.habits.indexOf(id) * 60}ms both`;
       card.innerHTML = `
         <div class="habit-icon-box" style="--habit-color:${h.color}">${h.emoji}</div>
         <div class="habit-info">
@@ -1831,12 +1902,12 @@ function renderStats() {
   }
   const weekPct = weekTotal > 0 ? Math.round(weekDone / weekTotal * 100) : 0;
 
-  document.getElementById('kpiToday').textContent  = `${todayDone}/${HABIT_IDS.length}`;
-  document.getElementById('kpiWeek').textContent   = `${weekPct}%`;
-  document.getElementById('kpiBest').textContent   = overallBestStreak();
+  const best = overallBestStreak();
   const totalXp = db().xp?.total || 0;
-  const kpiXpEl = document.getElementById('kpiXp');
-  if (kpiXpEl) { kpiXpEl.textContent = totalXp >= 1000 ? `${(totalXp/1000).toFixed(1)}k` : totalXp; }
+  countUp('kpiToday', todayDone, 400, `/${HABIT_IDS.length}`);
+  countUp('kpiWeek',  weekPct,   600, '%');
+  countUp('kpiBest',  best,      800);
+  countUp('kpiXp',    totalXp >= 1000 ? parseFloat((totalXp/1000).toFixed(1)) : totalXp, 1000, totalXp >= 1000 ? 'k' : '');
 
   // Heatmap: 15 weeks × 7 days, starting from Mon
   const grid = document.getElementById('heatmapGrid');
@@ -1869,7 +1940,8 @@ function renderStats() {
       if (isFuture) cls += ';opacity:.25';
       const cell = document.createElement('div');
       cell.className = cls;
-      cell.title = isFuture ? '' : `${ds}: ${done}/9`;
+      cell.title = isFuture ? '' : `${ds}: ${done}/${HABIT_IDS.length}`;
+      cell.style.animation = `cell-fade .4s ease ${Math.floor(Math.random()*400)}ms both`;
       col.appendChild(cell);
       d.setDate(d.getDate() + 1);
     }
