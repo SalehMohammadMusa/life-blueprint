@@ -1709,11 +1709,14 @@ function resetApp() {
 // ═══════════════════════════════════════════════════════════════
 let viewOffset = 0;
 
-function todayStr() { return new Date().toISOString().split('T')[0]; }
+function todayStr() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
 
 function offsetStr(n) {
   const d = new Date(); d.setDate(d.getDate() + n);
-  return d.toISOString().split('T')[0];
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 }
 
 function viewStr()   { return offsetStr(viewOffset); }
@@ -1758,7 +1761,7 @@ function streak(habitId) {
   const d = new Date();
   if (!habits[today]?.[habitId]) d.setDate(d.getDate() - 1);
   for (let i = 0; i < 365; i++) {
-    const ds = d.toISOString().split('T')[0];
+    const ds = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
     if (habits[ds]?.[habitId]) { s++; d.setDate(d.getDate() - 1); }
     else break;
   }
@@ -1984,7 +1987,7 @@ function renderStats() {
     const col = document.createElement('div');
     col.className = 'heatmap-col';
     for (let row = 0; row < 7; row++) {
-      const ds = d.toISOString().split('T')[0];
+      const ds = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
       const done = HABIT_IDS.filter(id => habits[ds]?.[id]).length;
       const isFuture = d > today_d;
       let cls = 'hm-cell';
@@ -2466,7 +2469,7 @@ function renderAgents() {
     list.innerHTML = '<div style="color:var(--muted);font-size:13px;text-align:center;padding:24px 0">No agents in your network yet.</div>';
     return;
   }
-  const today = new Date().toISOString().split('T')[0];
+  const today = todayStr();
   list.innerHTML = people.map(p => {
     const days = p.lastTexted ? Math.floor((Date.now() - new Date(p.lastTexted)) / 86400000) : null;
     const overdue = days === null || days >= 14;
@@ -2505,7 +2508,7 @@ function markTexted(id) {
   const data = db();
   const p = (data.people || []).find(x => x.id === id);
   if (!p) return;
-  p.lastTexted = new Date().toISOString().split('T')[0];
+  p.lastTexted = todayStr();
   dbSave(data);
   renderAgents();
   showToast(`${p.name} — contact logged ✓`);
