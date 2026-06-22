@@ -1,0 +1,19 @@
+{
+  "name": "Agent Dashboard",
+  "short_name": "Agent",
+  "description": "Life Blueprint — daily mission control",
+  "start_url": "/life-blueprint/",
+  "scope": "/life-blueprint/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#03070D",
+  "background_color": "#03070D",
+  "icons": [
+    {
+      "src": "/life-blueprint/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
